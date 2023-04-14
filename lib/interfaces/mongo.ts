@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 
 
 export interface IMongoDal{
     mongoUrl: string;
+    schema:any
 }
 
 export interface  ICreateItem{
@@ -24,4 +26,14 @@ export interface IBlog{
     userId:any,
     description:string,
     username:string
+    imageUrl?:string
+}
+
+export interface ISchemaExport{
+    Blog:any
+}
+
+export interface IClientBlog{
+relativePath:string
+baseUrl:string
 }

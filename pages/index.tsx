@@ -1,24 +1,57 @@
 import NavBar from '@/components/NavBar';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { Inter } from 'next/font/google'
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import {
+  useDisclosure,
+  Tabs, TabList, TabPanels, Tab, TabPanel
+} from '@chakra-ui/react'
+import { BlogServices } from '@/lib/clientApiServices/blog';
+import Waring from '@/components/Waring';
+import Blog from '@/components/Blog';
 
-
-export default function Home() {
-  const {data,status, update} = useSession()
+export default function Home(props: any) {
+  console.log(props.data)
+  const { status} = useSession()
   const [hydrated, setHydrated] = useState<boolean>()
+  const [warningModalOpen, setWarningModalOpen] = useState<boolean>(true)
   const router = useRouter()
   useEffect(() => {
     setHydrated(true)
   })
-  if(!hydrated) return null
-  if(status === "unauthenticated") 
-  {router.push("api/auth/signin")
-}
+  if (!hydrated) return null
+  // if (status === "unauthenticated") {
+  //   router.push("api/auth/signin")
+  // }
   return (
-   <div>
-    <NavBar username={data?.user?.name}/>
-   </div>
+    <div>
+      <div className='px-8 sm:px-20'>
+        <Tabs variant='soft-rounded' colorScheme='green'>
+          <TabList>
+            <Tab>Blogs</Tab>
+            <Tab>Courses</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+             <Blog data={props.data}/>
+            </TabPanel>
+            <TabPanel>
+              <p>Currently unavailable</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </div>
+      <Waring open={warningModalOpen} setOpen={setWarningModalOpen} message={"Testing warning"} />
+    </div>
   )
+}
+
+export async function getServerSideProps(context: any) {
+  const blogService = new BlogServices()
+  const response = await blogService.getBlogList({})
+  return {
+    props: {
+      data: response.data
+    }
+  }
 }
