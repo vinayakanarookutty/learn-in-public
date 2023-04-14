@@ -18,7 +18,7 @@ export default function Home(props: any) {
   const router = useRouter()
   useEffect(() => {
     setHydrated(true)
-  })
+  },[])
   if (!hydrated) return null
   // if (status === "unauthenticated") {
   //   router.push("api/auth/signin")
@@ -28,10 +28,14 @@ export default function Home(props: any) {
       <div className='px-8 sm:px-20'>
         <Tabs variant='soft-rounded' colorScheme='green'>
           <TabList>
+            <Tab>Trending</Tab>
             <Tab>Blogs</Tab>
             <Tab>Courses</Tab>
           </TabList>
           <TabPanels>
+            <TabPanel>
+           <h1>Service unavailable</h1>
+            </TabPanel>
             <TabPanel>
              <Blog data={props.data}/>
             </TabPanel>
@@ -47,11 +51,11 @@ export default function Home(props: any) {
 }
 
 export async function getServerSideProps(context: any) {
-  const blogService = new BlogServices()
-  const response = await blogService.getBlogList({})
+  // const blogService = new BlogServices()
+  // const response = await blogService.getBlogList({})
   return {
     props: {
-      data: response.data
+      data: "Hello"
     }
   }
 }
