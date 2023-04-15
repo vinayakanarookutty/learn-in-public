@@ -20,9 +20,6 @@ export default function Home(props: any) {
     setHydrated(true)
   },[])
   if (!hydrated) return null
-  // if (status === "unauthenticated") {
-  //   router.push("api/auth/signin")
-  // }
   return (
     <div>
       <div className='px-8 sm:px-20'>
@@ -34,10 +31,10 @@ export default function Home(props: any) {
           </TabList>
           <TabPanels>
             <TabPanel>
-           <h1>Service unavailable</h1>
+           <h1>Currently unavailable</h1>
             </TabPanel>
             <TabPanel>
-             <Blog data={props.data}/>
+             <Blog />
             </TabPanel>
             <TabPanel>
               <p>Currently unavailable</p>

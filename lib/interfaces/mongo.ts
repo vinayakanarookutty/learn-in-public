@@ -23,7 +23,7 @@ queryObj:any
 
 export interface IBlog{
     title:string,
-    userId:any,
+    userEmail:any,
     description:string,
     username:string
     imageUrl?:string
@@ -31,6 +31,7 @@ export interface IBlog{
 
 export interface ISchemaExport{
     Blog:any
+    User:any
 }
 
 export interface IClientBlog{

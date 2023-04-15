@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
-import { ICreateItem, IGetItem, IMongoDal } from "../interfaces/mongo" 
+import { ICreateItem, IGetItem, IMongoDal } from "../interfaces/mongo"
 import { MongoSchema } from "../db/mongo/schema";
 
 export class MongoDal implements IMongoDal {
-    mongoUrl:string ;
+    mongoUrl: string;
     schema: any;
     constructor() {
         this.mongoUrl = process.env.DATABASE_URL!;
         this.createItem = this.createItem.bind(this);
+        this.getItem = this.getItem.bind(this);
         this.schema = new MongoSchema().initializeSchemas()
     }
 
@@ -16,9 +17,9 @@ export class MongoDal implements IMongoDal {
         const model = mongoose.model(resource)
         console.log(uniqueCheck)
         if (uniqueCheck !== null) {
-            console.log("Executing unique check",uniqueCheck)
+            console.log("Executing unique check", uniqueCheck)
             const duplicate = await model.findOne(uniqueCheck)
-            console.log("Duplicate data",duplicate)
+            console.log("Duplicate data", duplicate)
             if (duplicate) {
                 const errorObj = new Error()
                 errorObj.message = "Duplicate entry"
@@ -33,10 +34,10 @@ export class MongoDal implements IMongoDal {
         await mongoose.connect(this.mongoUrl)
         const model = mongoose.model(resource)
         try {
-          const result = await model.find(queryObj)
+            const result = await model.find(queryObj)
             return result
         } catch (error) {
-
+            throw error
         }
     }
 }
